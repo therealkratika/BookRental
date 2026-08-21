@@ -24,77 +24,76 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-violet-100 via-white to-white px-4">
-      {/* Background Decorative Element */}
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-violet-600 to-indigo-500" />
-
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#FAF7F2] text-[#2C221E] px-4 py-12 selection:bg-[#E8DFD1]">
       <div className="w-full max-w-md">
         {/* Logo Branding */}
         <div className="flex flex-col items-center mb-8">
-          <div className="w-12 h-12 bg-violet-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-violet-200 mb-4">
-            <Library size={28} />
-          </div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">
-            Book<span className="text-violet-600">Hub</span>
-          </h1>
+          <Link to="/" className="flex flex-col items-center group">
+            <div className="w-11 h-11 bg-[#3D281D] rounded-lg flex items-center justify-center text-[#FAF7F2] shadow-sm group-hover:bg-[#2A1B13] transition-colors mb-3">
+              <Library size={22} />
+            </div>
+            <h1 className="text-2xl font-serif font-bold tracking-tight text-[#2C221E]">
+              Book<span className="text-[#8C5D30]">Hub</span>
+            </h1>
+          </Link>
         </div>
 
         {/* Auth Card */}
-        <div className="bg-white rounded-[2.5rem] p-8 md:p-10 shadow-[0_20px_50px_rgba(124,58,237,0.1)] border border-gray-100">
+        <div className="bg-white rounded-2xl p-8 md:p-10 shadow-xl shadow-[#2C221E]/5 border border-[#E0D5C5]">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-black text-slate-900">Welcome Back</h2>
-            <p className="text-slate-500 mt-2 font-medium">Please enter your details to sign in</p>
+            <h2 className="text-2xl sm:text-3xl font-serif text-[#2C221E]">Welcome Back</h2>
+            <p className="text-sm text-[#63534B] mt-1.5 font-sans">Please enter your details to sign in</p>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             {/* Email Field */}
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-slate-700 ml-1">Email Address</label>
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold uppercase tracking-wider text-[#704A33] ml-0.5">Email Address</label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-violet-500 transition-colors">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#8C7A6B] group-focus-within:text-[#704A33] transition-colors">
                   <Mail size={18} />
                 </div>
                 <input
                   type="email"
                   placeholder="you@example.com"
-                  className={`block w-full bg-slate-50 border-2 ${
-                    errors.email ? "border-red-100" : "border-transparent"
-                  } focus:border-violet-200 focus:bg-white rounded-2xl py-3.5 pl-11 pr-4 text-sm transition-all outline-none`}
+                  className={`block w-full bg-[#FAF7F2] border ${
+                    errors.email ? "border-red-300" : "border-[#E0D5C5]"
+                  } focus:border-[#704A33] focus:bg-white rounded-xl py-3 pl-10 pr-4 text-sm text-[#2C221E] placeholder:text-[#A09083] transition-all outline-none shadow-xs`}
                   {...register("email", { required: "Email is required" })}
                 />
               </div>
               {errors.email && (
-                <p className="text-xs font-bold text-red-500 ml-1 mt-1">{errors.email.message}</p>
+                <p className="text-xs font-medium text-red-600 ml-0.5 mt-1">{errors.email.message}</p>
               )}
             </div>
 
             {/* Password Field */}
-            <div className="space-y-2">
-              <div className="flex justify-between items-center ml-1">
-                <label className="text-sm font-bold text-slate-700">Password</label>
+            <div className="space-y-1.5">
+              <div className="flex justify-between items-center ml-0.5">
+                <label className="text-xs font-semibold uppercase tracking-wider text-[#704A33]">Password</label>
                 <button
                   type="button"
                   onClick={() => navigate("/forgot-password")}
-                  className="text-xs font-bold text-violet-600 hover:text-violet-700 hover:underline"
+                  className="text-xs font-medium text-[#8C5D30] hover:text-[#2C221E] transition-colors"
                 >
                   Forgot password?
                 </button>
               </div>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-violet-500 transition-colors">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#8C7A6B] group-focus-within:text-[#704A33] transition-colors">
                   <Lock size={18} />
                 </div>
                 <input
                   type="password"
                   placeholder="••••••••"
-                  className={`block w-full bg-slate-50 border-2 ${
-                    errors.password ? "border-red-100" : "border-transparent"
-                  } focus:border-violet-200 focus:bg-white rounded-2xl py-3.5 pl-11 pr-4 text-sm transition-all outline-none`}
+                  className={`block w-full bg-[#FAF7F2] border ${
+                    errors.password ? "border-red-300" : "border-[#E0D5C5]"
+                  } focus:border-[#704A33] focus:bg-white rounded-xl py-3 pl-10 pr-4 text-sm text-[#2C221E] placeholder:text-[#A09083] transition-all outline-none shadow-xs`}
                   {...register("password", { required: "Password is required" })}
                 />
               </div>
               {errors.password && (
-                <p className="text-xs font-bold text-red-500 ml-1 mt-1">{errors.password.message}</p>
+                <p className="text-xs font-medium text-red-600 ml-0.5 mt-1">{errors.password.message}</p>
               )}
             </div>
 
@@ -102,11 +101,11 @@ export default function Login() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full flex items-center justify-center gap-2 bg-violet-600 text-white py-4 rounded-2xl font-black text-sm shadow-xl shadow-violet-200 hover:bg-violet-700 hover:-translate-y-0.5 transition-all active:scale-[0.98] disabled:opacity-70 disabled:pointer-events-none"
+              className="w-full flex items-center justify-center gap-2 bg-[#3D281D] text-[#FAF7F2] py-3.5 rounded-xl font-medium text-sm shadow-sm hover:bg-[#2A1B13] transition-colors disabled:opacity-70 disabled:pointer-events-none mt-2"
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="animate-spin" size={20} />
+                  <Loader2 className="animate-spin" size={18} />
                   <span>Signing in...</span>
                 </>
               ) : (
@@ -119,10 +118,10 @@ export default function Login() {
           </form>
 
           {/* Footer Link */}
-          <div className="mt-8 text-center">
-            <p className="text-sm font-medium text-slate-500">
+          <div className="mt-8 text-center pt-6 border-t border-[#E8DFD1]">
+            <p className="text-sm text-[#63534B]">
               Don’t have an account?{" "}
-              <Link to="/signup" className="text-violet-600 font-bold hover:underline">
+              <Link to="/signup" className="text-[#8C5D30] font-semibold hover:text-[#2C221E] transition-colors">
                 Create account
               </Link>
             </p>

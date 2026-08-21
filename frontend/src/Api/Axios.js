@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://bookrental-bi83.onrender.com/api",
+  baseURL: "http://localhost:5001/api",
   withCredentials: true, 
 });
 api.interceptors.request.use((config) => {

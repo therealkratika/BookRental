@@ -25,30 +25,30 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
-      <div className="w-full max-w-md bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 p-8 md:p-10 border border-slate-100 animate-in fade-in zoom-in-95 duration-500">
+    <div className="min-h-screen flex items-center justify-center bg-[#FAF7F2] text-[#2C221E] px-4 py-12 selection:bg-[#E8DFD1]">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl shadow-[#2C221E]/5 p-8 md:p-10 border border-[#E0D5C5]">
         
         {/* ICON & HEADER */}
         <div className="flex flex-col items-center text-center mb-8">
-          <div className="w-16 h-16 bg-violet-600 rounded-2xl flex items-center justify-center text-white mb-4 shadow-lg shadow-violet-200">
-            <KeyRound size={32} />
+          <div className="w-12 h-12 bg-[#3D281D] rounded-lg flex items-center justify-center text-[#FAF7F2] mb-4 shadow-sm">
+            <KeyRound size={22} />
           </div>
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight">Forgot Password?</h2>
-          <p className="text-slate-500 font-medium mt-2">
-            No worries, it happens. Enter your email and we'll send you a reset link.
+          <h2 className="text-2xl sm:text-3xl font-serif text-[#2C221E]">Forgot Password?</h2>
+          <p className="text-sm text-[#63534B] font-sans mt-2 leading-relaxed">
+            No worries, it happens. Enter your email and we'll send you a link to reset it.
           </p>
         </div>
 
         {/* FORM */}
-        <form className="space-y-6" onSubmit={handleReset}>
-          <div className="space-y-2">
-            <label className="text-sm font-bold text-slate-700 ml-1">Email Address</label>
+        <form className="space-y-5" onSubmit={handleReset}>
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold uppercase tracking-wider text-[#704A33] ml-0.5">Email Address</label>
             <div className="relative group">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-violet-600 transition-colors" size={20} />
+              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8C7A6B] group-focus-within:text-[#704A33] transition-colors" size={18} />
               <input
                 type="email"
                 placeholder="name@example.com"
-                className="w-full pl-12 pr-5 py-4 bg-slate-50 border-2 border-transparent focus:border-violet-200 focus:bg-white rounded-2xl outline-none transition-all font-medium"
+                className="w-full pl-10 pr-4 py-3 bg-[#FAF7F2] border border-[#E0D5C5] focus:border-[#704A33] focus:bg-white rounded-xl outline-none transition-all text-sm text-[#2C221E] placeholder:text-[#A09083] shadow-xs"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -59,12 +59,12 @@ export default function ForgotPassword() {
           <button 
             type="submit" 
             disabled={status === "loading" || status === "success"}
-            className="w-full bg-violet-600 text-white py-4 rounded-2xl font-black text-lg shadow-lg shadow-violet-100 hover:bg-violet-700 hover:-translate-y-1 transition-all active:scale-[0.98] flex items-center justify-center gap-3 disabled:opacity-70"
+            className="w-full bg-[#3D281D] text-[#FAF7F2] py-3.5 rounded-xl font-medium text-sm shadow-sm hover:bg-[#2A1B13] transition-colors disabled:opacity-70 disabled:pointer-events-none flex items-center justify-center gap-2 mt-2"
           >
             {status === "loading" ? (
-              <Loader2 className="animate-spin" size={20} />
+              <Loader2 className="animate-spin" size={18} />
             ) : status === "success" ? (
-              <CheckCircle2 size={20} />
+              <CheckCircle2 size={18} />
             ) : null}
             {status === "loading" ? "Sending..." : status === "success" ? "Email Sent" : "Send Reset Link"}
           </button>
@@ -72,21 +72,23 @@ export default function ForgotPassword() {
 
         {/* FEEDBACK MESSAGE */}
         {message && (
-          <div className={`mt-6 p-4 rounded-2xl text-sm font-bold flex gap-3 items-center animate-in slide-in-from-top-2 duration-300 ${
-            status === "success" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"
+          <div className={`mt-5 p-3.5 rounded-xl text-xs font-medium flex gap-2.5 items-center ${
+            status === "success" 
+              ? "bg-[#E8EAE3] text-[#3D4F41] border border-[#C5CDC6]" 
+              : "bg-red-50 text-red-700 border border-red-200"
           }`}>
-            {status === "success" && <CheckCircle2 size={18} />}
-            {message}
+            {status === "success" && <CheckCircle2 size={16} className="shrink-0" />}
+            <span>{message}</span>
           </div>
         )}
 
         {/* FOOTER */}
-        <div className="mt-8 pt-6 border-t border-slate-50">
+        <div className="mt-8 pt-6 border-t border-[#E8DFD1]">
           <Link 
             to="/login" 
-            className="flex items-center justify-center gap-2 text-slate-500 font-bold hover:text-violet-600 transition-colors group"
+            className="flex items-center justify-center gap-2 text-sm text-[#63534B] font-medium hover:text-[#2C221E] transition-colors group"
           >
-            <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
+            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
             Back to Sign in
           </Link>
         </div>

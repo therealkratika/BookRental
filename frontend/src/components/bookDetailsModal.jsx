@@ -8,7 +8,6 @@ import {
   Star, 
   User, 
   ShieldCheck,
-  Tag,
   Loader2
 } from "lucide-react";
 
@@ -38,144 +37,146 @@ export default function BookDetailModal({ book, onClose, onActionSuccess }) {
     }
   };
 
-  const phone = book.contact?.phone || "";
+  const phone = book.contact?.phone || book.sellerPhone || "";
   const whatsappLink = `https://wa.me/91${phone}`;
 
   return (
     <div 
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#2C221E]/60 backdrop-blur-xs transition-opacity duration-300"
       onClick={onClose}
     >
       <div 
-        className="relative w-full max-w-4xl bg-white rounded-[3rem] shadow-2xl overflow-hidden flex flex-col md:flex-row animate-in zoom-in-95 duration-300"
+        className="relative w-full max-w-4xl bg-white rounded-2xl border border-[#E0D5C5] shadow-lg overflow-hidden flex flex-col md:flex-row transition-transform duration-300"
         onClick={(e) => e.stopPropagation()}
       >
         {/* CLOSE BUTTON */}
         <button 
-          className="absolute top-6 right-6 z-50 p-2 bg-white/80 backdrop-blur-md rounded-full text-slate-400 hover:text-slate-900 transition-colors shadow-sm"
+          className="absolute top-4 right-4 z-50 p-2 bg-[#FAF7F2] border border-[#E0D5C5] rounded-xl text-[#63534B] hover:text-[#2C221E] hover:bg-[#EFE8DC] transition-colors shadow-xs"
           onClick={onClose}
         >
-          <X size={20} />
+          <X size={18} />
         </button>
 
         {/* LEFT: IMAGE SECTION */}
-        <div className="md:w-2/5 bg-slate-50 relative group">
+        <div className="md:w-2/5 bg-[#FAF7F2] relative group min-h-[280px] md:min-h-[480px]">
           <img
             src={book.image || "https://images.unsplash.com/photo-1543004407-1bc9adacc49f?w=600"}
             alt={book.title}
-            className="w-full h-full object-cover min-h-[300px] md:min-h-[500px]"
+            className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-violet-600/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#2C221E]/20 to-transparent" />
         </div>
 
         {/* RIGHT: DETAILS SECTION */}
-        <div className="md:w-3/5 p-8 md:p-12 overflow-y-auto max-h-[90vh]">
-          <div className="space-y-6">
-            {/* Header */}
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="px-3 py-1 bg-violet-100 text-violet-600 text-[10px] font-black uppercase tracking-widest rounded-full">
+        <div className="md:w-3/5 p-6 md:p-10 overflow-y-auto max-h-[85vh] space-y-6">
+          {/* Header */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              {book.category && (
+                <span className="px-2.5 py-0.5 bg-[#FAF7F2] text-[#704A33] border border-[#E0D5C5] text-[10px] font-semibold uppercase tracking-wider rounded-md">
                   {book.category}
                 </span>
-                <span className="flex items-center gap-1 px-3 py-1 bg-amber-50 text-amber-600 text-[10px] font-black uppercase tracking-widest rounded-full">
-                  <ShieldCheck size={12} /> {book.condition || "Good"}
-                </span>
+              )}
+              <span className="flex items-center gap-1 px-2.5 py-0.5 bg-[#E8EAE3] text-[#3D4F41] border border-[#C5CDC6] text-[10px] font-semibold uppercase tracking-wider rounded-md">
+                <ShieldCheck size={12} /> {book.condition || "Good Condition"}
+              </span>
+            </div>
+            <h2 className="text-2xl md:text-3xl font-serif font-bold text-[#2C221E] leading-tight">
+              {book.title}
+            </h2>
+            <p className="text-sm font-medium text-[#63534B]">
+              by <span className="text-[#2C221E] font-serif font-bold underline decoration-[#8C5D30]/40 underline-offset-4">{book.author}</span>
+            </p>
+          </div>
+
+          {/* Pricing Section */}
+          <div className="flex flex-wrap items-center gap-6 p-4 bg-[#FAF7F2] rounded-xl border border-[#E0D5C5]">
+            {(book.isForSale || book.salePrice) && (
+              <div className="flex flex-col">
+                <span className="text-[10px] font-semibold text-[#704A33] uppercase tracking-wider">Sale Price</span>
+                <span className="text-2xl font-serif font-bold text-[#3D281D]">₹{book.salePrice}</span>
               </div>
-              <h2 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">
-                {book.title}
-              </h2>
-              <p className="text-lg font-medium text-slate-500 mt-1 flex items-center gap-2">
-                by <span className="text-slate-900 underline decoration-violet-300 underline-offset-4">{book.author}</span>
+            )}
+            {(book.isForSale || book.salePrice) && (book.isForRent || book.rentPricePerDay) && (
+              <div className="w-px h-8 bg-[#E0D5C5] hidden sm:block" />
+            )}
+            {(book.isForRent || book.rentPricePerDay) && (
+              <div className="flex flex-col">
+                <span className="text-[10px] font-semibold text-[#704A33] uppercase tracking-wider">Rent / Day</span>
+                <span className="text-2xl font-serif font-bold text-[#8C5D30]">₹{book.rentPricePerDay}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Location */}
+          <div className="flex items-center gap-2 text-[#63534B] text-xs font-medium">
+            <MapPin size={16} className="text-[#8C5D30]" />
+            <span>{book.location?.city || book.city || "Unknown Location"}{book.location?.area || book.area ? `, ${book.location?.area || book.area}` : ""}</span>
+          </div>
+
+          {/* Seller Info Card */}
+          <div className="p-5 border border-[#E0D5C5] rounded-xl bg-white space-y-4">
+            <div className="flex items-center gap-3.5">
+              <div className="w-10 h-10 bg-[#FAF7F2] rounded-xl border border-[#E0D5C5] flex items-center justify-center text-[#8C5D30]">
+                <User size={20} />
+              </div>
+              <div>
+                <h4 className="font-serif font-bold text-[#2C221E] leading-none">{book.contact?.name || book.sellerName || book.name || "Verified Seller"}</h4>
+                <p className="text-xs font-medium text-[#63534B] mt-1">Community Member</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2.5 pt-1">
+              <a 
+                href={`tel:${phone}`} 
+                className="flex items-center justify-center gap-2 py-2.5 bg-[#3D281D] text-[#FAF7F2] rounded-xl font-medium text-xs uppercase tracking-wider hover:bg-[#2A1B13] transition-colors shadow-xs"
+              >
+                <Phone size={14} /> Call
+              </a>
+              <a 
+                href={whatsappLink} 
+                target="_blank" 
+                rel="noreferrer" 
+                className="flex items-center justify-center gap-2 py-2.5 bg-[#3D4F41] text-[#FAF7F2] rounded-xl font-medium text-xs uppercase tracking-wider hover:bg-[#2D3B31] transition-colors shadow-xs"
+              >
+                <MessageCircle size={14} /> WhatsApp
+              </a>
+            </div>
+          </div>
+
+          {/* Interactive Rating Section */}
+          <div className="pt-4 border-t border-[#E8DFD1] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <p className="text-xs font-semibold text-[#704A33] uppercase tracking-wider flex items-center gap-2">
+                 Your Rating {loading && <Loader2 size={14} className="animate-spin text-[#8C5D30]" />}
               </p>
-            </div>
-
-            {/* Pricing Section */}
-            <div className="flex flex-wrap gap-4 p-6 bg-slate-50 rounded-3xl border border-slate-100">
-              {book.isForSale && (
-                <div className="flex flex-col">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Buy Now</span>
-                  <span className="text-2xl font-black text-slate-900">₹{book.salePrice}</span>
-                </div>
-              )}
-              {book.isForSale && book.isForRent && <div className="w-px h-10 bg-slate-200 hidden sm:block" />}
-              {book.isForRent && (
-                <div className="flex flex-col">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Rent/Day</span>
-                  <span className="text-2xl font-black text-violet-600">₹{book.rentPricePerDay}</span>
-                </div>
-              )}
-            </div>
-
-            {/* Location */}
-            <div className="flex items-center gap-2 text-slate-600 font-medium">
-              <MapPin size={18} className="text-violet-500" />
-              <span>{book.location?.city || "Unknown"}, {book.location?.area || ""}</span>
-            </div>
-
-            {/* Seller Info Card */}
-            <div className="p-6 border-2 border-slate-100 rounded-[2rem] space-y-4">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-500">
-                  <User size={24} />
-                </div>
-                <div>
-                  <h4 className="font-black text-slate-900 leading-none">{book.contact?.name || "N/A"}</h4>
-                  <p className="text-xs font-medium text-slate-500 mt-1">Verified Seller</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 pt-2">
-                <a 
-                  href={`tel:${phone}`} 
-                  className="flex items-center justify-center gap-2 py-3 bg-slate-900 text-white rounded-2xl font-bold text-sm hover:bg-slate-800 transition-all active:scale-95"
-                >
-                  <Phone size={16} /> Call
-                </a>
-                <a 
-                  href={whatsappLink} 
-                  target="_blank" 
-                  rel="noreferrer" 
-                  className="flex items-center justify-center gap-2 py-3 bg-emerald-500 text-white rounded-2xl font-bold text-sm hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-100 active:scale-95"
-                >
-                  <MessageCircle size={16} /> WhatsApp
-                </a>
+              <div className="flex items-center gap-1">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    onMouseEnter={() => setHoverRating(star)}
+                    onMouseLeave={() => setHoverRating(0)}
+                    onClick={() => handleRating(star)}
+                    className="transition-transform duration-150 hover:scale-110 disabled:opacity-50"
+                    disabled={loading}
+                  >
+                    <Star
+                      size={22}
+                      fill={star <= (hoverRating || rating) ? "#8C5D30" : "none"}
+                      className={star <= (hoverRating || rating) ? "text-[#8C5D30]" : "text-[#E0D5C5]"}
+                    />
+                  </button>
+                ))}
               </div>
             </div>
 
-            {/* Interactive Rating Section */}
-            <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="space-y-1">
-                <p className="text-sm font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                   Your Rating {loading && <Loader2 size={14} className="animate-spin text-violet-600" />}
-                </p>
-                <div className="flex items-center gap-1">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      key={star}
-                      onMouseEnter={() => setHoverRating(star)}
-                      onMouseLeave={() => setHoverRating(0)}
-                      onClick={() => handleRating(star)}
-                      className="transition-all duration-200 transform hover:scale-125 disabled:opacity-50"
-                      disabled={loading}
-                    >
-                      <Star
-                        size={24}
-                        fill={star <= (hoverRating || rating) ? "#7c3aed" : "none"}
-                        className={star <= (hoverRating || rating) ? "text-violet-600" : "text-slate-200"}
-                      />
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-slate-50 px-5 py-3 rounded-2xl text-center">
-                <p className="text-[10px] font-bold text-slate-400 uppercase">Avg Rating</p>
-                <div className="flex items-center gap-1 justify-center">
-                  <Star size={14} fill="#f59e0b" className="text-amber-500" />
-                  <span className="text-xl font-black text-slate-900">
-                    {book.rating?.toFixed(1) || "0.0"}
-                  </span>
-                </div>
+            <div className="bg-[#FAF7F2] border border-[#E0D5C5] px-4 py-2.5 rounded-xl text-center">
+              <p className="text-[10px] font-semibold text-[#704A33] uppercase tracking-wider">Avg Rating</p>
+              <div className="flex items-center gap-1 justify-center mt-0.5">
+                <Star size={14} fill="#8C5D30" className="text-[#8C5D30]" />
+                <span className="text-lg font-serif font-bold text-[#2C221E]">
+                  {book.rating?.toFixed(1) || "0.0"}
+                </span>
               </div>
             </div>
           </div>
