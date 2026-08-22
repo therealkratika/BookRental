@@ -10,10 +10,13 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors({
-  origin: "https://bookloom-psi.vercel.app/",
-  credentials: true
-}));
+
+app.use(
+  cors({
+    origin: "https://bookloom-psi.vercel.app",
+    credentials: true
+  })
+);
 app.use(express.json());
 
 app.use("/api/books",bookingRoutes);

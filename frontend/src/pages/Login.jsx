@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { AuthSDK } from "../Api/sdk";
-import { Mail, Lock, ArrowRight, Loader2, Library } from "lucide-react";
+import { Mail, Lock, ArrowRight, Loader2, Library, CheckCircle2 } from "lucide-react";
 
 export default function Login() {
   const navigate = useNavigate();
+  const [verificationSent, setVerificationSent] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -14,12 +17,18 @@ export default function Login() {
 
   const onSubmit = async (data) => {
     try {
+      setVerificationSent(false); // Reset status on new submit
       await AuthSDK.login(data.email, data.password);
       navigate("/dashboard", { replace: true });
     } catch (err) {
-      setError("email", {
-        message: err.message || "Invalid email or password",
-      });
+      // Check if error is related to unverified email
+      if (err.requiresVerification || err.message?.toLowerCase().includes("verify")) {
+        setVerificationSent(true);
+      } else {
+        setError("email", {
+          message: err.message || "Invalid email or password",
+        });
+      }
     }
   };
 
@@ -44,6 +53,16 @@ export default function Login() {
             <h2 className="text-2xl sm:text-3xl font-serif text-[#2C221E]">Welcome Back</h2>
             <p className="text-sm text-[#63534B] mt-1.5 font-sans">Please enter your details to sign in</p>
           </div>
+
+          {/* Green Verification Alert Popup */}
+          {verificationSent && (
+            <div className="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 flex items-start gap-3">
+              <CheckCircle2 className="size-5 text-emerald-600 shrink-0 mt-0.5" />
+              <div className="text-xs sm:text-sm font-medium leading-relaxed">
+                A verification link has been sent to your email. Please check your inbox.
+              </div>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             {/* Email Field */}
