@@ -6,13 +6,18 @@ export const verifyFirebaseToken = async (req, res, next) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({ message: "No token provided" });
+      return res.status(401).json({
+        message: "No token provided",
+      });
     }
 
     const token = authHeader.split(" ")[1];
+
     const decoded = await admin.auth().verifyIdToken(token);
 
-    let user = await User.findOne({ firebaseUid: decoded.uid });
+    let user = await User.findOne({
+      firebaseUid: decoded.uid,
+    });
 
     if (!user) {
       user = await User.create({
@@ -21,15 +26,19 @@ export const verifyFirebaseToken = async (req, res, next) => {
         name: decoded.name || "User",
         avatar: decoded.picture || "",
       });
+
+      console.log("MongoDB user created:", user.email);
     }
 
-    // attach user to request
     req.user = user;
 
     next();
-
   } catch (error) {
-    console.error(error);
-    return res.status(401).json({ message: "Invalid or expired token" });
+    console.error("Firebase authentication error:", error);
+
+    return res.status(401).json({
+      message: "Authentication failed",
+      error: error.message,
+    });
   }
 };
